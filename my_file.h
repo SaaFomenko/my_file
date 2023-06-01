@@ -16,6 +16,10 @@ class MyException : public std::exception
 		const char* what() const noexcept override;
 };
 
+// MyFile object builded, if has file at path_
+// or set default argument isRw_=true.
+// Raw dynamic char array in class has default arg segment_=1024
+// for new array created and increments size array.
 class MyFile
 {
 	private:

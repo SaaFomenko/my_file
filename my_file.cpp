@@ -40,8 +40,6 @@ MyFile::~MyFile()
 {
     delete[] data;
     data = nullptr;
-    fin.close();
-    fout.close();
 }
 
 void MyFile::data_resize(int i)
@@ -74,11 +72,12 @@ void MyFile::write(const char* data_)
         data_resize(i);
 
         data[i] = data_[i];
+        fout << data[i];
         ++i;
     }
 
     size = i + 1;
-
+    fout.close();
 }
 
 void MyFile::read()
@@ -103,6 +102,7 @@ void MyFile::read()
 
         size = i + 1;
     }
+    fin.close();
 }
 
 const char* MyFile::to_str()
