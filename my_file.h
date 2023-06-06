@@ -29,18 +29,19 @@ class MyFile
 		std::ofstream fout;
 		char* data;
 		const char* data_str;
+		std::string str;
 		unsigned int size;
 		bool isRw;
 
 		void data_resize(int i);
-		void write(const char* data_ = "");
 		void read();
+		void write();
 
 	public:
-		MyFile(const char* path_, bool isRw_ = false, const unsigned int segment_ = 1024);
+		MyFile(const char* path_, std::string str_="", const unsigned int segment_ = 1024);
 		virtual ~MyFile();
 	
-	const char* to_str();
+		const char* to_str();
 };
 
 #endif

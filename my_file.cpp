@@ -19,12 +19,12 @@ const char* MyException::what() const noexcept
     return msg;
 }
 
-MyFile::MyFile(const char* path_, bool isRw_, const unsigned int segment_) :
+MyFile::MyFile(const char* path_, std::string str_, const unsigned int segment_) :
     path(path_),
     segment(segment_),
-    isRw(isRw_)
+    str(str_)
 {
-    if (isRw)
+    if (str.length() != 0)
     {
         write();
     }
@@ -56,7 +56,7 @@ void MyFile::data_resize(int i)
     }
 }
 
-void MyFile::write(const char* data_)
+void MyFile::write()
 {
     fout.open(path);
     
@@ -65,18 +65,9 @@ void MyFile::write(const char* data_)
         throw MyException(err_write_file_msg);
     }
 
-    data = new char[segment];
-    int i = 0;
-    while (data_[i] != 0)
-    {
-        data_resize(i);
-
-        data[i] = data_[i];
-        fout << data[i];
-        ++i;
-    }
-
-    size = i + 1;
+    fout << str;
+ 
+    size = str.length();
     fout.close();
 }
 
