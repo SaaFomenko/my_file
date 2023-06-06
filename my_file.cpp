@@ -26,7 +26,7 @@ MyFile::MyFile(const char* path_, std::string str_, const unsigned int segment_)
 {
     if (str.length() != 0)
     {
-        write();
+        write();    
     }
     else
     {
@@ -65,9 +65,17 @@ void MyFile::write()
         throw MyException(err_write_file_msg);
     }
 
-    fout << str;
- 
     size = str.length();
+    data_str = str.c_str();
+    data = new char[segment]{};
+    data_resize(size);
+
+    for (int i = 0; i < size; ++i)
+    {
+        data[i] = data_str[i];
+        fout << data_str[i];
+    }
+
     fout.close();
 }
 
@@ -96,7 +104,7 @@ void MyFile::read()
     fin.close();
 }
 
-const char* MyFile::to_str()
+std::string MyFile::to_str()
 {
     // std::cout << "Devider: ";
     // int i = 0;

@@ -41,7 +41,7 @@ class MyFile
 		MyFile(const char* path_, std::string str_="", const unsigned int segment_ = 1024);
 		virtual ~MyFile();
 	
-		const char* to_str();
+		std::string to_str();
 };
 
 #endif
