@@ -41,7 +41,7 @@ class MyFile
 		MyFile(const char* path_, std::string str_="", const unsigned int segment_ = 1024);
 		virtual ~MyFile();
 	
-		std::string to_str();
+		std::string to_str(const char divider = ' ');
 };
 
 #endif

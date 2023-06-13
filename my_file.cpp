@@ -95,7 +95,7 @@ void MyFile::read()
         {
             data_resize(i);
 
-            fin >> data[i];
+            fin.get(data[i]);
             ++i;
         }
 
@@ -104,7 +104,7 @@ void MyFile::read()
     fin.close();
 }
 
-std::string MyFile::to_str()
+std::string MyFile::to_str(const char divider)
 {
     // std::cout << "Devider: ";
     // int i = 0;
@@ -131,7 +131,14 @@ std::string MyFile::to_str()
 
     for (int i = 0; i < size; ++i)
     {
-        temp[i] = data[i];
+        if (data[i] == '\n' || data[i] == '\t')
+        {
+            temp[i] = divider;
+        }
+        else
+        {
+            temp[i] = data[i];
+        }
     }
 
     temp[size] = 0;
