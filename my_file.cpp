@@ -3,21 +3,23 @@
 #include "my_file.h"
 
 
+static const std::string err_open_file_msg = "Error opening input file: ";
+static const std::string err_write_file_msg = "Error opening for write file: ";
 
-static const char* err_open_file_msg = "Error opening input file: ";
-static const char* err_write_file_msg = "Error opening for write file: ";
-
-MyException::MyException(const char* msg_) :
-    msg(msg_)
-{}
-
-MyException::~MyException()
-{}
-
-const char* MyException::what() const noexcept
+class MyException : public std::exception
 {
-    return msg;
-}
+    private:
+    const std::string msg;
+
+    public:
+        MyException(const std::string msg_) : msg(msg_){}
+        virtual ~MyException(){}
+
+        const char* what() const noexcept override
+        {
+            return msg.c_str();
+        }
+};
 
 MyFile::MyFile(const char* path_, std::string str_, const unsigned int segment_) :
     path(path_),
@@ -33,7 +35,7 @@ MyFile::MyFile(const char* path_, std::string str_, const unsigned int segment_)
         read();
     }
 
-    std::cout << "MyFile object build.\n";
+    //std::cout << "MyFile object build. Size = " << size << '\n';
 }
 
 MyFile::~MyFile()
@@ -70,7 +72,7 @@ void MyFile::write()
     data = new char[segment]{};
     data_resize(size);
 
-    for (int i = 0; i < size; ++i)
+    for (int i = 0; i <= size; ++i)
     {
         data[i] = data_str[i];
         fout << data_str[i];
@@ -99,7 +101,9 @@ void MyFile::read()
             ++i;
         }
 
-        size = i + 1;
+        //size = i + 1;
+        size = i;
+        data[size] = '\0';
     }
     fin.close();
 }
@@ -145,4 +149,32 @@ std::string MyFile::to_str(const char divider)
     data_str = temp;
 
     return data_str;
+}
+
+std::vector<std::string> MyFile::to_words()
+{
+    std::string word = "";
+    std::vector<std::string> words;
+
+    for (unsigned int i = 0; i < size; ++i)
+    {
+        bool div = data[i] == ' ' || data[i] == '\n' || data[i] == '\t';
+        //std::cout << "Is divider: " << div << '\n';
+
+        if (div)
+        {
+            words.push_back(word);
+            word.clear();
+        }
+        else 
+        {
+            // Append the char to the temp string.
+            word += data[i]; 
+        }
+
+    }
+    
+    //words.push_back(word);
+
+    return words;
 }

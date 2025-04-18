@@ -1,20 +1,9 @@
 #ifndef MY_FILE_H
 #define MY_FILE_H
 
-
 #include <fstream>
+#include <vector>
 
-class MyException : public std::exception
-{
-	private:
-	const char* msg;
-
-	public:
-		MyException(const char* msg_);
-		virtual ~MyException();
-
-		const char* what() const noexcept override;
-};
 
 // MyFile object builded, if has file at path_
 // or set default argument isRw_=true.
@@ -42,6 +31,7 @@ class MyFile
 		virtual ~MyFile();
 	
 		std::string to_str(const char divider = ' ');
+		std::vector<std::string> to_words();
 };
 
 #endif

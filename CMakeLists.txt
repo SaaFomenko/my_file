@@ -9,4 +9,6 @@ file(GLOB
 	public_headers "*.h"
 	sources "*.cpp")
 
-add_library(${PROJECT_NAME}_lib ${sources} ${public_headers})
+add_library(${PROJECT_NAME}_lib
+			${sources} 
+			${public_headers})
