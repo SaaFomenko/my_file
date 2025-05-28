@@ -1,4 +1,8 @@
+#ifdef DEB_CONST
 #include <iostream>
+#endif
+
+#include <string>
 #include <cstring>
 #include "my_file.h"
 
@@ -24,7 +28,10 @@ class MyException : public std::exception
 MyFile::MyFile(const char* path_, std::string str_, const unsigned int segment_) :
     path(path_),
     segment(segment_),
-    str(str_)
+    str(str_),
+    data(nullptr),
+    size(0),
+    isRw(false)
 {
     if (str.length() != 0)
     {
@@ -35,7 +42,9 @@ MyFile::MyFile(const char* path_, std::string str_, const unsigned int segment_)
         read();
     }
 
-    //std::cout << "MyFile object build. Size = " << size << '\n';
+#ifdef DEB_CONST
+    std::cout << "MyFile object build. Size = " << size << '\n';
+#endif
 }
 
 MyFile::~MyFile()
@@ -106,6 +115,18 @@ void MyFile::read()
         data[size] = '\0';
     }
     fin.close();
+}
+
+bool MyFile::exist()
+{
+    if(stat(path, &sb) == 0) return true;
+
+    return false;
+}
+
+void MyFile::set_str(const char* str)
+{
+
 }
 
 std::string MyFile::to_str(const char divider)

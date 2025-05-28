@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <vector>
+#include <sys/stat.h>
 
 
 // MyFile object builded, if has file at path_
@@ -14,6 +15,7 @@ class MyFile
 	private:
 		const unsigned int segment;
 		const char* path;
+		struct stat sb;
 		std::ifstream fin;
 		std::ofstream fout;
 		char* data;
@@ -30,6 +32,8 @@ class MyFile
 		MyFile(const char* path_, std::string str_="", const unsigned int segment_ = 1024);
 		virtual ~MyFile();
 	
+		bool exist();
+		void set_str(const char* str);
 		std::string to_str(const char divider = ' ');
 		std::vector<std::string> to_words();
 };
