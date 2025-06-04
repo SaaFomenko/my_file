@@ -36,6 +36,7 @@ class MyFile
 		void set_str(const char* str);
 		std::string to_str(const char divider = ' ');
 		std::vector<std::string> to_words();
+		std::string raw_str();
 };
 
 #endif

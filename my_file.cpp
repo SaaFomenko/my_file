@@ -1,4 +1,6 @@
-#ifdef DEB_CONST
+// #ifdef DEB_CONST
+// #define DEB_RAW
+#ifdef DEB_RAW
 #include <iostream>
 #endif
 
@@ -9,6 +11,7 @@
 
 static const std::string err_open_file_msg = "Error opening input file: ";
 static const std::string err_write_file_msg = "Error opening for write file: ";
+static const std::string err_buzzy_data = "Error value data buzzy.";
 
 class MyException : public std::exception
 {
@@ -39,7 +42,7 @@ MyFile::MyFile(const char* path_, std::string str_, const unsigned int segment_)
     }
     else
     {
-        read();
+        if(exist()) read();
     }
 
 #ifdef DEB_CONST
@@ -58,7 +61,7 @@ void MyFile::data_resize(int i)
     if (i >= segment)
     {
         char* temp = new char[i + segment];
-        for (int j = 0; j >= i; ++j)
+        for (int j = 0; j <= i; ++j)
         {
             temp[j] = data[j];
         }
@@ -112,9 +115,16 @@ void MyFile::read()
 
         //size = i + 1;
         size = i;
-        data[size] = '\0';
+        data[size] = 0;
     }
     fin.close();
+    data_str = data;
+
+#ifdef DEB_RAW
+    std::cout << "!!! data_str: " << data_str << "\n!!! data_str end.\n";
+#endif
+
+    str = data_str;
 }
 
 bool MyFile::exist()
@@ -124,9 +134,22 @@ bool MyFile::exist()
     return false;
 }
 
-void MyFile::set_str(const char* str)
+void MyFile::set_str(const char* str_)
 {
-
+    if(data == nullptr)
+    {
+        str = str_;
+        write();
+    }
+    else
+    {
+        // throw MyException(err_buzzy_data);
+        delete data;
+        data = nullptr;
+        size = 0;
+        str = str_;
+        write();
+    }
 }
 
 std::string MyFile::to_str(const char divider)
@@ -198,4 +221,15 @@ std::vector<std::string> MyFile::to_words()
     //words.push_back(word);
 
     return words;
+}
+
+std::string MyFile::raw_str()
+{
+
+#ifdef DEB_RAW
+    std::cout << "!!! File raw text: " << str.c_str() << '\n' ;
+    std::cout << "!!! End file raw text.\n";
+#endif
+
+    return str;
 }
